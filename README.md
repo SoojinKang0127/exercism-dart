@@ -3,3 +3,7 @@
 ## 1. Hello World
 
 ## 2. Two Fer
+
+## 3. Leap
+
+## 4. Scrabble Score
