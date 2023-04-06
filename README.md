@@ -7,3 +7,5 @@
 ## 3. Leap
 
 ## 4. Scrabble Score
+
+## 5. Armstrong Numbers
