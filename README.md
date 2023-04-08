@@ -9,3 +9,5 @@
 ## 4. Scrabble Score
 
 ## 5. Armstrong Numbers
+
+## 6. High Scores
