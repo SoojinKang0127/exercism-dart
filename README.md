@@ -11,3 +11,5 @@
 ## 5. Armstrong Numbers
 
 ## 6. High Scores
+
+## 7. Difference of Squares
