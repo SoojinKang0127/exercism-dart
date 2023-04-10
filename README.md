@@ -13,3 +13,5 @@
 ## 6. High Scores
 
 ## 7. Difference of Squares
+
+## 8. Forth
