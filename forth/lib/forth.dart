@@ -4,15 +4,44 @@ class Forth {
   List<String> stackManip = ['DUP', 'DROP', 'SWAP', 'OVER'];
 
   List<int> evaluate(String str) {
-    List<String> charList = str.split(' ');
-    for (var char in charList) {
-      if (isNumeric(char)) {
-        stack.add(int.parse(char));
-      } else if (isOperator(char)) {
-        stack = operate(stack, char);
+    List<String> words = str.split(' ');
+    for (var word in words) {
+      if (isNumeric(word)) {
+        stack.add(int.parse(word));
+      } else if (isOperator(word)) {
+        stack = operate(stack, word);
+      } else if (isStackManipulator(word)) {
+        stack = manipulate(stack, word.toUpperCase());
+      } else {
+        throw Exception('');
       }
     }
     return stack;
+  }
+
+  bool isStackManipulator(String word) {
+    return stackManip.contains(word.toUpperCase()) ? true : false;
+  }
+
+  List<int> manipulate(List<int> stack, String manipulator) {
+    if(stack.isEmpty){
+      throw Exception('Stack empty');
+    }
+
+    List<int> result = [];
+
+    if(manipulator == 'DUP'){
+      result.addAll(stack);
+      result.add(stack.last);
+    }else if(manipulator == 'DROP'){
+      result.addAll(stack);
+      result.removeLast();
+    }else if(manipulator == 'SWAP'){
+
+    }else if(manipulator == 'OVER'){
+
+    }
+    return result;
   }
 
   bool isNumeric(String s) {

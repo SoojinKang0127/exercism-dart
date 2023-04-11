@@ -13,8 +13,8 @@ void main() {
   group('Forth: multiplication - ', multiplication);
   group('Forth: division - ', division);
   group('Forth: combined arithmetic - ', combinedArithmetic);
-  // group('Forth: dup - ', dup);
-  // group('Forth: drop - ', drop);
+  group('Forth: dup - ', dup);
+  group('Forth: drop - ', drop);
   // group('Forth: swap - ', swap);
   // group('Forth: over - ', over);
   // group('Forth: user-defined words - ', userDefinedWords);
@@ -165,13 +165,13 @@ void dup() {
     var forth = Forth();
     forth.evaluate('1 dup');
     expect(forth.stack, equals(<int>[1, 1]));
-  }, skip: true);
+  }, skip: false);
 
   test('copies the top value on the stack', () {
     var forth = Forth();
     forth.evaluate('1 2 dup');
     expect(forth.stack, equals(<int>[1, 2, 2]));
-  }, skip: true);
+  }, skip: false);
 
   test('errors if there is nothing on the stack', () {
     var forth = Forth();
@@ -179,7 +179,7 @@ void dup() {
       () => forth.evaluate('dup'),
       throwsEmptyStack,
     );
-  }, skip: true);
+  }, skip: false);
 }
 
 void drop() {
@@ -187,13 +187,13 @@ void drop() {
     var forth = Forth();
     forth.evaluate('1 drop');
     expect(forth.stack, equals(<int>[]));
-  }, skip: true);
+  }, skip: false);
 
   test('removes the top value on the stack if it is not the only one', () {
     var forth = Forth();
     forth.evaluate('1 2 drop');
     expect(forth.stack, equals(<int>[1]));
-  }, skip: true);
+  }, skip: false);
 
   test('errors if there is nothing on the stack', () {
     var forth = Forth();
@@ -201,7 +201,7 @@ void drop() {
       () => forth.evaluate('drop'),
       throwsEmptyStack,
     );
-  }, skip: true);
+  }, skip: false);
 }
 
 void swap() {
