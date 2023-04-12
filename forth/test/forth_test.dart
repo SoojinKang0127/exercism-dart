@@ -15,8 +15,8 @@ void main() {
   group('Forth: combined arithmetic - ', combinedArithmetic);
   group('Forth: dup - ', dup);
   group('Forth: drop - ', drop);
-  // group('Forth: swap - ', swap);
-  // group('Forth: over - ', over);
+  group('Forth: swap - ', swap);
+  group('Forth: over - ', over);
   // group('Forth: user-defined words - ', userDefinedWords);
   // group('Forth: case-insensitivity - ', caseInsensitivity);
 }
@@ -209,14 +209,14 @@ void swap() {
     var forth = Forth();
     forth.evaluate('1 2 swap');
     expect(forth.stack, equals(<int>[2, 1]));
-  }, skip: true);
+  }, skip: false);
 
   test('swaps the top two values on the stack if they are not the only ones',
       () {
     var forth = Forth();
     forth.evaluate('1 2 3 swap');
     expect(forth.stack, equals(<int>[1, 3, 2]));
-  }, skip: true);
+  }, skip: false);
 
   test('errors if there is nothing on the stack', () {
     var forth = Forth();
@@ -224,7 +224,7 @@ void swap() {
       () => forth.evaluate('swap'),
       throwsEmptyStack,
     );
-  }, skip: true);
+  }, skip: false);
 
   test('errors if there is only one value on the stack', () {
     var forth = Forth();
@@ -232,7 +232,7 @@ void swap() {
       () => forth.evaluate('1 swap'),
       throwsEmptyStack,
     );
-  }, skip: true);
+  }, skip: false);
 }
 
 void over() {
@@ -240,13 +240,13 @@ void over() {
     var forth = Forth();
     forth.evaluate('1 2 over');
     expect(forth.stack, equals(<int>[1, 2, 1]));
-  }, skip: true);
+  }, skip: false);
 
   test('copies the second element if there are more than two', () {
     var forth = Forth();
     forth.evaluate('1 2 3 over');
     expect(forth.stack, equals(<int>[1, 2, 3, 2]));
-  }, skip: true);
+  }, skip: false);
 
   test('errors if there is nothing on the stack', () {
     var forth = Forth();
@@ -254,7 +254,7 @@ void over() {
       () => forth.evaluate('over'),
       throwsEmptyStack,
     );
-  }, skip: true);
+  }, skip: false);
 
   test('errors if there is only one value on the stack', () {
     var forth = Forth();
@@ -262,7 +262,7 @@ void over() {
       () => forth.evaluate('1 over'),
       throwsEmptyStack,
     );
-  }, skip: true);
+  }, skip: false);
 }
 
 void userDefinedWords() {

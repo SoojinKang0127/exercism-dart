@@ -1,3 +1,20 @@
+typedef Operator = int Function(int x, int y);
+int Plus(int x, int y) {
+  return x + y;
+}
+
+int Minus(int x, int y) {
+  return x - y;
+}
+
+int Multiply(int x, int y) {
+  return x * y;
+}
+
+int Division(int x, int y) {
+  return x ~/ y;
+}
+
 class Forth {
   List<int> stack = [];
   List<String> intArithmetic = ['+', '-', '*', '/'];
@@ -13,7 +30,7 @@ class Forth {
       } else if (isStackManipulator(word)) {
         stack = manipulate(stack, word.toUpperCase());
       } else {
-        throw Exception('');
+        throw Exception('Unknown command');
       }
     }
     return stack;
@@ -24,23 +41,34 @@ class Forth {
   }
 
   List<int> manipulate(List<int> stack, String manipulator) {
-    if(stack.isEmpty){
+    if (stack.isEmpty) {
       throw Exception('Stack empty');
     }
 
     List<int> result = [];
-
-    if(manipulator == 'DUP'){
+    if (manipulator == 'DUP') {
       result.addAll(stack);
       result.add(stack.last);
-    }else if(manipulator == 'DROP'){
+    } else if (manipulator == 'DROP') {
       result.addAll(stack);
       result.removeLast();
-    }else if(manipulator == 'SWAP'){
+    } else if (manipulator == 'SWAP') {
+      if (stack.length < 2) {
+        throw Exception('Stack empty');
+      }
 
-    }else if(manipulator == 'OVER'){
+      result.addAll(stack.take(stack.length - 2));
+      result.add(stack.last);
+      result.add(stack.elementAt(stack.length - 2));
+    } else if (manipulator == 'OVER') {
+      if (stack.length < 2) {
+        throw Exception('Stack empty');
+      }
 
+      result.addAll(stack);
+      result.add(stack.elementAt(stack.length - 2));
     }
+
     return result;
   }
 
@@ -60,20 +88,27 @@ class Forth {
       throw Exception('Stack empty');
     }
 
-    List<int> result = [];
-    if (operator == '+') {
-      result.add(stack[0] + stack[1]);
-    } else if (operator == '-') {
-      result.add(stack[0] - stack[1]);
-    } else if (operator == '*') {
-      result.add(stack[0] * stack[1]);
-    } else if (operator == '/') {
-      if (stack[1] == 0) {
-        throw Exception('Division by zero');
-      }
-      result.add(stack[0] ~/ stack[1]);
+    Operator oper;
+    switch (operator) {
+      case "+":
+        oper = Plus;
+        break;
+      case "-":
+        oper = Minus;
+        break;
+      case "*":
+        oper = Multiply;
+        break;
+      case "/":
+        if (currentStack[1] == 0) {
+          throw Exception('Division by zero');
+        }
+        oper = Division;
+        break;
+      default:
+        throw Exception('No match operator');
     }
 
-    return result;
+    return [oper(currentStack[0], currentStack[1])];
   }
 }
