@@ -17,7 +17,7 @@ void main() {
   group('Forth: drop - ', drop);
   group('Forth: swap - ', swap);
   group('Forth: over - ', over);
-  // group('Forth: user-defined words - ', userDefinedWords);
+  group('Forth: user-defined words - ', userDefinedWords);
   // group('Forth: case-insensitivity - ', caseInsensitivity);
 }
 
@@ -271,14 +271,14 @@ void userDefinedWords() {
     forth.evaluate(': dup-twice dup dup ;');
     forth.evaluate('1 dup-twice');
     expect(forth.stack, equals(<int>[1, 1, 1]));
-  }, skip: true);
+  }, skip: false);
 
   test('execute in the right order', () {
     var forth = Forth();
     forth.evaluate(': countup 1 2 3 ;');
     forth.evaluate('countup');
     expect(forth.stack, equals(<int>[1, 2, 3]));
-  }, skip: true);
+  }, skip: false);
 
   test('can override other user-defined words', () {
     var forth = Forth();
@@ -286,21 +286,21 @@ void userDefinedWords() {
     forth.evaluate(': foo dup dup ;');
     forth.evaluate('1 foo');
     expect(forth.stack, equals(<int>[1, 1, 1]));
-  }, skip: true);
+  }, skip: false);
 
   test('can override built-in words', () {
     var forth = Forth();
     forth.evaluate(': swap dup ;');
     forth.evaluate('1 swap');
     expect(forth.stack, equals(<int>[1, 1]));
-  }, skip: true);
+  }, skip: false);
 
   test('can override built-in operators', () {
     var forth = Forth();
     forth.evaluate(': + * ;');
     forth.evaluate('3 4 +');
     expect(forth.stack, equals(<int>[12]));
-  }, skip: true);
+  }, skip: false);
 
   test('can use different words with the same name', () {
     var forth = Forth();
@@ -309,7 +309,7 @@ void userDefinedWords() {
     forth.evaluate(': foo 6 ;');
     forth.evaluate('bar foo');
     expect(forth.stack, equals(<int>[5, 6]));
-  }, skip: true);
+  }, skip: false);
 
   test('can define word that uses word with the same name', () {
     var forth = Forth();
@@ -317,7 +317,7 @@ void userDefinedWords() {
     forth.evaluate(': foo foo 1 + ;');
     forth.evaluate('foo');
     expect(forth.stack, equals(<int>[11]));
-  }, skip: true);
+  }, skip: false);
 
   test('cannot redefine non-negative numbers', () {
     var forth = Forth();
@@ -325,7 +325,7 @@ void userDefinedWords() {
       () => forth.evaluate(': 1 2 ;'),
       throwsInvalidDefinition,
     );
-  }, skip: true);
+  }, skip: false);
 
   test('cannot redefine negative numbers', () {
     var forth = Forth();
@@ -333,7 +333,7 @@ void userDefinedWords() {
       () => forth.evaluate(': -1 2 ;'),
       throwsInvalidDefinition,
     );
-  }, skip: true);
+  }, skip: false);
 
   test('errors if executing a non-existent word', () {
     var forth = Forth();
@@ -342,7 +342,7 @@ void userDefinedWords() {
       throwsA(isA<Exception>().having(
           (e) => e.toString(), 'message', 'Exception: Unknown command')),
     );
-  }, skip: true);
+  }, skip: false);
 
   test('only defines locally', () {
     var first = Forth();
@@ -356,7 +356,7 @@ void userDefinedWords() {
           <int>[0],
           <int>[2]
         ]));
-  }, skip: true);
+  }, skip: false);
 }
 
 void caseInsensitivity() {

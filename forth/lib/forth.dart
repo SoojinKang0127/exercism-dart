@@ -15,25 +15,86 @@ int Division(int x, int y) {
   return x ~/ y;
 }
 
+typedef Manipulator = List<int> Function(List<int> stack);
+List<int> Duplicate(List<int> stack) {
+  List<int> result = [];
+  result.addAll(stack);
+  result.add(stack.last);
+  return result;
+}
+
+List<int> Drop(List<int> stack) {
+  List<int> result = [];
+  result.addAll(stack);
+  result.removeLast();
+  return result;
+}
+
+List<int> Swap(List<int> stack) {
+  List<int> result = [];
+  result.addAll(stack.take(stack.length - 2));
+  result.add(stack.last);
+  result.add(stack.elementAt(stack.length - 2));
+  return result;
+}
+
+List<int> Over(List<int> stack) {
+  List<int> result = [];
+  result.addAll(stack);
+  result.add(stack.elementAt(stack.length - 2));
+  return result;
+}
+
 class Forth {
   List<int> stack = [];
   List<String> intArithmetic = ['+', '-', '*', '/'];
   List<String> stackManip = ['DUP', 'DROP', 'SWAP', 'OVER'];
+  Map<String, String> userDef = {};
 
-  List<int> evaluate(String str) {
-    List<String> words = str.split(' ');
-    for (var word in words) {
-      if (isNumeric(word)) {
-        stack.add(int.parse(word));
-      } else if (isOperator(word)) {
-        stack = operate(stack, word);
-      } else if (isStackManipulator(word)) {
-        stack = manipulate(stack, word.toUpperCase());
-      } else {
-        throw Exception('Unknown command');
+  void evaluate(String str) {
+    if (str == "") {
+      return;
+    }
+    if (str.startsWith(':') && str.endsWith(';')) {
+      defineUserWord(str);
+    } else {
+      List<String> words = str.split(' ');
+      for (var word in words) {
+        evaluateByWord(word);
       }
     }
-    return stack;
+  }
+
+  void evaluateByWord(String word) {
+    if (isNumeric(word)) {
+      stack.add(int.parse(word));
+    } else if (userDef[word] != null) {
+      evaluate(userDef[word] ?? "");
+    } else if (isOperator(word)) {
+      stack = operate(stack, word);
+    } else if (isStackManipulator(word)) {
+      stack = manipulate(stack, word.toUpperCase());
+    } else {
+      throw Exception('Unknown command');
+    }
+  }
+
+  bool isUserDef(String word) {
+    return userDef[word] != null ? true : false;
+  }
+
+  void defineUserWord(String str) {
+    List<String> words =
+        str.replaceAll(": ", "").replaceAll(" ;", "").split(" ");
+
+    if (isNumeric(words[0])) {
+      throw Exception('Invalid definition');
+    }
+    List<String> copy = [...words];
+    copy.removeAt(0);
+
+    userDef[words[0]] =
+        copy.map((e) => userDef[e] != null ? userDef[e] : e).join(" ");
   }
 
   bool isStackManipulator(String word) {
@@ -45,31 +106,31 @@ class Forth {
       throw Exception('Stack empty');
     }
 
-    List<int> result = [];
-    if (manipulator == 'DUP') {
-      result.addAll(stack);
-      result.add(stack.last);
-    } else if (manipulator == 'DROP') {
-      result.addAll(stack);
-      result.removeLast();
-    } else if (manipulator == 'SWAP') {
-      if (stack.length < 2) {
-        throw Exception('Stack empty');
-      }
-
-      result.addAll(stack.take(stack.length - 2));
-      result.add(stack.last);
-      result.add(stack.elementAt(stack.length - 2));
-    } else if (manipulator == 'OVER') {
-      if (stack.length < 2) {
-        throw Exception('Stack empty');
-      }
-
-      result.addAll(stack);
-      result.add(stack.elementAt(stack.length - 2));
+    Manipulator manip;
+    switch (manipulator) {
+      case 'DUP':
+        manip = Duplicate;
+        break;
+      case 'DROP':
+        manip = Drop;
+        break;
+      case 'SWAP':
+        if (stack.length < 2) {
+          throw Exception('Stack empty');
+        }
+        manip = Swap;
+        break;
+      case 'OVER':
+        if (stack.length < 2) {
+          throw Exception('Stack empty');
+        }
+        manip = Over;
+        break;
+      default:
+        throw Exception('No match manipulator');
     }
 
-    return result;
+    return manip(stack);
   }
 
   bool isNumeric(String s) {
