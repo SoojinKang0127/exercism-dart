@@ -68,8 +68,11 @@ class Forth {
   void evaluateByWord(String word) {
     if (isNumeric(word)) {
       stack.add(int.parse(word));
-    } else if (userDef[word] != null) {
-      evaluate(userDef[word] ?? "");
+    } else if (isUserDef(word)) {
+      evaluate(userDef[word] ??
+          userDef[word.toLowerCase()] ??
+          userDef[word.toUpperCase()] ??
+          "");
     } else if (isOperator(word)) {
       stack = operate(stack, word);
     } else if (isStackManipulator(word)) {
@@ -80,7 +83,12 @@ class Forth {
   }
 
   bool isUserDef(String word) {
-    return userDef[word] != null ? true : false;
+    return userDef.keys
+            .toList()
+            .map((key) => key.toUpperCase())
+            .contains(word.toUpperCase())
+        ? true
+        : false;
   }
 
   void defineUserWord(String str) {

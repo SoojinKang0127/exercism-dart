@@ -18,7 +18,7 @@ void main() {
   group('Forth: swap - ', swap);
   group('Forth: over - ', over);
   group('Forth: user-defined words - ', userDefinedWords);
-  // group('Forth: case-insensitivity - ', caseInsensitivity);
+  group('Forth: case-insensitivity - ', caseInsensitivity);
 }
 
 void parsingAndNumbers() {
@@ -364,37 +364,37 @@ void caseInsensitivity() {
     var forth = Forth();
     forth.evaluate('1 DUP Dup dup');
     expect(forth.stack, equals(<int>[1, 1, 1, 1]));
-  }, skip: true);
+  }, skip: false);
 
   test('DROP is case-insensitive', () {
     var forth = Forth();
     forth.evaluate('1 2 3 4 DROP Drop drop');
     expect(forth.stack, equals(<int>[1]));
-  }, skip: true);
+  }, skip: false);
 
   test('SWAP is case-insensitive', () {
     var forth = Forth();
     forth.evaluate('1 2 SWAP 3 Swap 4 swap');
     expect(forth.stack, equals(<int>[2, 3, 4, 1]));
-  }, skip: true);
+  }, skip: false);
 
   test('OVER is case-insensitive', () {
     var forth = Forth();
     forth.evaluate('1 2 OVER Over over');
     expect(forth.stack, equals(<int>[1, 2, 1, 2, 1]));
-  }, skip: true);
+  }, skip: false);
 
   test('user-defined words are case-insensitive', () {
     var forth = Forth();
     forth.evaluate(': foo dup ;');
     forth.evaluate('1 FOO Foo foo');
     expect(forth.stack, equals(<int>[1, 1, 1, 1]));
-  }, skip: true);
+  }, skip: false);
 
   test('definitions are case-insensitive', () {
     var forth = Forth();
     forth.evaluate(': SWAP DUP Dup dup ;');
     forth.evaluate('1 swap');
     expect(forth.stack, equals(<int>[1, 1, 1, 1]));
-  }, skip: true);
+  }, skip: false);
 }
