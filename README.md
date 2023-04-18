@@ -17,9 +17,15 @@ easy
 
 ## 6. High Scores
 easy
+
 ## 7. Difference of Squares
 easy
+
 ## 8. Forth
 hard
+
 ## 9. Word Count
+easy
+
+## 10. Bob
 easy
