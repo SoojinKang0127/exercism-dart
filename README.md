@@ -32,3 +32,6 @@ easy
 
 ## 11. Space Age
 easy
+
+## 12. Hamming
+easy
