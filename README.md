@@ -35,3 +35,6 @@ easy
 
 ## 12. Hamming
 easy
+
+## 13. Gigasecond
+easy
