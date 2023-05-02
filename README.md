@@ -41,3 +41,9 @@ easy
 
 ## 14. Raindrops
 easy
+
+## 15. Sum of Multiples
+easy
+
+## 16. RNA Transcription
+easy
